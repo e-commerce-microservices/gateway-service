@@ -10,12 +10,18 @@ http:
     - selector: ecommerce.AuthService.Login
       post: "/auth/login"
       body: "*"
+    - selector: ecommerce.AuthService.Ping
+      get: "/auth/ping"
 
     # Product gateway
-    - selector: ecommerce.ProductService.CreateCategory
-      post: "/product/create-category"
-      body: "*"
-    - selector: ecommerce.ProductService.CreateProduct
-      post: "/product/create-product"
-      body: "*"
+    # - selector: ecommerce.ProductService.CreateCategory
+    #   post: "/product/create-category"
+    #   body: "*"
+    # - selector: ecommerce.ProductService.CreateProduct
+    #   post: "/product/create-product"
+    #   body: "*"
     
+    # User gateway
+    - selector: ecommerce.UserService.Ping
+      post: "/user/ping"
+      body: "*"

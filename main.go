@@ -13,15 +13,16 @@ import (
 
 func main() {
 	mux := runtime.NewServeMux()
-
 	ctx := context.Background()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := pb.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "localhost:8081", opts)
+	// err := pb.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "u:8081", opts)
+	err := pb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user-service:8080", opts)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err := http.ListenAndServe(":3000", mux); err != nil {
+	log.Println("listen on port: 8080")
+	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
 	}
 }
