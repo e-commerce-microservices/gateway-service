@@ -42,7 +42,7 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 
 func (c *authServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	out := new(LoginResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/Login", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/Login", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *authServiceClient) Login(ctx context.Context, in *LoginRequest, opts ..
 
 func (c *authServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
 	out := new(GeneralResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/Register", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (c *authServiceClient) Register(ctx context.Context, in *RegisterRequest, o
 // Deprecated: Do not use.
 func (c *authServiceClient) GetUserClaims(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*UserClaimsResponse, error) {
 	out := new(UserClaimsResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/GetUserClaims", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/GetUserClaims", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (c *authServiceClient) GetUserClaims(ctx context.Context, in *empty.Empty, 
 
 func (c *authServiceClient) CustomerAuthorization(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*UserClaimsResponse, error) {
 	out := new(UserClaimsResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/CustomerAuthorization", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/CustomerAuthorization", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (c *authServiceClient) CustomerAuthorization(ctx context.Context, in *empty
 
 func (c *authServiceClient) SupplierAuthorization(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*UserClaimsResponse, error) {
 	out := new(UserClaimsResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/SupplierAuthorization", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/SupplierAuthorization", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (c *authServiceClient) SupplierAuthorization(ctx context.Context, in *empty
 
 func (c *authServiceClient) AdminAuthorization(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*UserClaimsResponse, error) {
 	out := new(UserClaimsResponse)
-	err := c.cc.Invoke(ctx, "/proto.AuthService/AdminAuthorization", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/AdminAuthorization", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +154,7 @@ func _AuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/Login",
+		FullMethod: "/ecommerce.AuthService/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).Login(ctx, req.(*LoginRequest))
@@ -172,7 +172,7 @@ func _AuthService_Register_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/Register",
+		FullMethod: "/ecommerce.AuthService/Register",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).Register(ctx, req.(*RegisterRequest))
@@ -190,7 +190,7 @@ func _AuthService_GetUserClaims_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/GetUserClaims",
+		FullMethod: "/ecommerce.AuthService/GetUserClaims",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).GetUserClaims(ctx, req.(*empty.Empty))
@@ -208,7 +208,7 @@ func _AuthService_CustomerAuthorization_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/CustomerAuthorization",
+		FullMethod: "/ecommerce.AuthService/CustomerAuthorization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).CustomerAuthorization(ctx, req.(*empty.Empty))
@@ -226,7 +226,7 @@ func _AuthService_SupplierAuthorization_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/SupplierAuthorization",
+		FullMethod: "/ecommerce.AuthService/SupplierAuthorization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).SupplierAuthorization(ctx, req.(*empty.Empty))
@@ -244,7 +244,7 @@ func _AuthService_AdminAuthorization_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.AuthService/AdminAuthorization",
+		FullMethod: "/ecommerce.AuthService/AdminAuthorization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).AdminAuthorization(ctx, req.(*empty.Empty))
@@ -256,7 +256,7 @@ func _AuthService_AdminAuthorization_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.AuthService",
+	ServiceName: "ecommerce.AuthService",
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -79,7 +79,7 @@ func RegisterAuthServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.AuthService/Register", runtime.WithHTTPPathPattern("/auth-service/register"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/ecommerce.AuthService/Register", runtime.WithHTTPPathPattern("/auth-service/register"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -143,7 +143,7 @@ func RegisterAuthServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.AuthService/Register", runtime.WithHTTPPathPattern("/auth-service/register"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/ecommerce.AuthService/Register", runtime.WithHTTPPathPattern("/auth-service/register"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
