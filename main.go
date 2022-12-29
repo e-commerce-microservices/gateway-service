@@ -16,12 +16,12 @@ func main() {
 
 	ctx := context.Background()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := pb.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "localhost:8001", opts)
+	err := pb.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "localhost:8081", opts)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	if err := http.ListenAndServe(":3000", mux); err != nil {
 		log.Fatal(err)
 	}
 }

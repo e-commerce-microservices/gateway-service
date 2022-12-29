@@ -3,6 +3,19 @@ config_version: 3
 
 http:
   rules:
+    # AuthService gateway
     - selector: ecommerce.AuthService.Register
-      post: /auth-service/register
+      post: "/auth/register"
       body: "*"
+    - selector: ecommerce.AuthService.Login
+      post: "/auth/login"
+      body: "*"
+
+    # Product gateway
+    - selector: ecommerce.ProductService.CreateCategory
+      post: "/product/create-category"
+      body: "*"
+    - selector: ecommerce.ProductService.CreateProduct
+      post: "/product/create-product"
+      body: "*"
+    
