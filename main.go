@@ -26,6 +26,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = pb.RegisterProductServiceHandlerFromEndpoint(ctx, mux, "product-service:8080", opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Println("listen on port: 8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)

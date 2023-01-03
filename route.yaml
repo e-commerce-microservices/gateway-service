@@ -4,16 +4,18 @@ config_version: 3
 http:
   rules:
     # AuthService gateway
+    - selector: ecommerce.AuthService.Ping
+      get: "/auth/ping"
     - selector: ecommerce.AuthService.Register
       post: "/auth/register"
       body: "*"
     - selector: ecommerce.AuthService.Login
       post: "/auth/login"
       body: "*"
-    - selector: ecommerce.AuthService.Ping
-      get: "/auth/ping"
 
     # Product gateway
+    - selector: ecommerce.ProductService.Ping
+      get: "/product/ping"
     # - selector: ecommerce.ProductService.CreateCategory
     #   post: "/product/create-category"
     #   body: "*"
@@ -23,5 +25,4 @@ http:
     
     # User gateway
     - selector: ecommerce.UserService.Ping
-      post: "/user/ping"
-      body: "*"
+      get: "/user/ping"
