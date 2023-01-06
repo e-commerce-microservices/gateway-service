@@ -16,9 +16,11 @@ http:
     # Product gateway
     - selector: ecommerce.ProductService.Ping
       get: "/product/ping"
-    # - selector: ecommerce.ProductService.CreateCategory
-    #   post: "/product/create-category"
-    #   body: "*"
+    - selector: ecommerce.ProductService.CreateCategory
+      post: "/category/create"
+      body: "*"
+    - selector: ecommerce.ProductService.GetListCategory
+      get: "/category/listing"
     # - selector: ecommerce.ProductService.CreateProduct
     #   post: "/product/create-product"
     #   body: "*"
