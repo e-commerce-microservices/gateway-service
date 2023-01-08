@@ -24,6 +24,9 @@ http:
     - selector: ecommerce.ProductService.GetListProduct
       post: "/product/listing"
       body: "*"
+    - selector: ecommerce.ProductService.GetProduct
+      post: "/product/detail"
+      body: "*"
 
     # - selector: ecommerce.ProductService.CreateProduct
     #   post: "/product/create-product"
