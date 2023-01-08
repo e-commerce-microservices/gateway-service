@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/rs/cors v1.8.3
 	golang.org/x/net v0.3.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect

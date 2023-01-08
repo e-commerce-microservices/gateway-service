@@ -21,6 +21,10 @@ http:
       body: "*"
     - selector: ecommerce.ProductService.GetListCategory
       get: "/category/listing"
+    - selector: ecommerce.ProductService.GetListProduct
+      post: "/product/listing"
+      body: "*"
+
     # - selector: ecommerce.ProductService.CreateProduct
     #   post: "/product/create-product"
     #   body: "*"
@@ -28,3 +32,8 @@ http:
     # User gateway
     - selector: ecommerce.UserService.Ping
       get: "/user/ping"
+    - selector: ecommerce.UserService.GetMe
+      get: "/user/me"
+    - selector: ecommerce.UserService.SupplierRegister
+      post: "/seller/register"
+      body: "*"
