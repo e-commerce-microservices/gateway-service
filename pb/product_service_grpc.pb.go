@@ -27,6 +27,8 @@ type ProductServiceClient interface {
 	CreateProduct(ctx context.Context, in *CreateProductRequest, opts ...grpc.CallOption) (*CreateProductResponse, error)
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*Product, error)
 	GetListProduct(ctx context.Context, in *GetListProductRequest, opts ...grpc.CallOption) (*GetListProductResponse, error)
+	GetRecomendProduct(ctx context.Context, in *GetRecommendProductRequest, opts ...grpc.CallOption) (*GetListProductResponse, error)
+	GetProductBySupplier(ctx context.Context, in *GetProductBySupplierRequest, opts ...grpc.CallOption) (*GetListProductResponse, error)
 	CreateCategory(ctx context.Context, in *CreateCategoryRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	GetListCategory(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*GetListCategoryResponse, error)
 }
@@ -75,6 +77,24 @@ func (c *productServiceClient) GetListProduct(ctx context.Context, in *GetListPr
 	return out, nil
 }
 
+func (c *productServiceClient) GetRecomendProduct(ctx context.Context, in *GetRecommendProductRequest, opts ...grpc.CallOption) (*GetListProductResponse, error) {
+	out := new(GetListProductResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.ProductService/GetRecomendProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) GetProductBySupplier(ctx context.Context, in *GetProductBySupplierRequest, opts ...grpc.CallOption) (*GetListProductResponse, error) {
+	out := new(GetListProductResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.ProductService/GetProductBySupplier", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *productServiceClient) CreateCategory(ctx context.Context, in *CreateCategoryRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
 	out := new(GeneralResponse)
 	err := c.cc.Invoke(ctx, "/ecommerce.ProductService/CreateCategory", in, out, opts...)
@@ -101,6 +121,8 @@ type ProductServiceServer interface {
 	CreateProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error)
 	GetProduct(context.Context, *GetProductRequest) (*Product, error)
 	GetListProduct(context.Context, *GetListProductRequest) (*GetListProductResponse, error)
+	GetRecomendProduct(context.Context, *GetRecommendProductRequest) (*GetListProductResponse, error)
+	GetProductBySupplier(context.Context, *GetProductBySupplierRequest) (*GetListProductResponse, error)
 	CreateCategory(context.Context, *CreateCategoryRequest) (*GeneralResponse, error)
 	GetListCategory(context.Context, *empty.Empty) (*GetListCategoryResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
@@ -121,6 +143,12 @@ func (UnimplementedProductServiceServer) GetProduct(context.Context, *GetProduct
 }
 func (UnimplementedProductServiceServer) GetListProduct(context.Context, *GetListProductRequest) (*GetListProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetListProduct not implemented")
+}
+func (UnimplementedProductServiceServer) GetRecomendProduct(context.Context, *GetRecommendProductRequest) (*GetListProductResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecomendProduct not implemented")
+}
+func (UnimplementedProductServiceServer) GetProductBySupplier(context.Context, *GetProductBySupplierRequest) (*GetListProductResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProductBySupplier not implemented")
 }
 func (UnimplementedProductServiceServer) CreateCategory(context.Context, *CreateCategoryRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCategory not implemented")
@@ -213,6 +241,42 @@ func _ProductService_GetListProduct_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_GetRecomendProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecommendProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).GetRecomendProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.ProductService/GetRecomendProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).GetRecomendProduct(ctx, req.(*GetRecommendProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_GetProductBySupplier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProductBySupplierRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).GetProductBySupplier(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.ProductService/GetProductBySupplier",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).GetProductBySupplier(ctx, req.(*GetProductBySupplierRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ProductService_CreateCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateCategoryRequest)
 	if err := dec(in); err != nil {
@@ -271,6 +335,14 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetListProduct",
 			Handler:    _ProductService_GetListProduct_Handler,
+		},
+		{
+			MethodName: "GetRecomendProduct",
+			Handler:    _ProductService_GetRecomendProduct_Handler,
+		},
+		{
+			MethodName: "GetProductBySupplier",
+			Handler:    _ProductService_GetProductBySupplier_Handler,
 		},
 		{
 			MethodName: "CreateCategory",

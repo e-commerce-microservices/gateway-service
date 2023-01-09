@@ -26,6 +26,7 @@ type AuthServiceClient interface {
 	Ping(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Pong, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
+	Refresh(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	// Deprecated: Do not use.
 	GetUserClaims(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*UserClaimsResponse, error)
 	CustomerAuthorization(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*UserClaimsResponse, error)
@@ -62,6 +63,15 @@ func (c *authServiceClient) Login(ctx context.Context, in *LoginRequest, opts ..
 func (c *authServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
 	out := new(GeneralResponse)
 	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/Register", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) Refresh(ctx context.Context, in *RefreshTokenRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.AuthService/Refresh", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +122,7 @@ type AuthServiceServer interface {
 	Ping(context.Context, *empty.Empty) (*Pong, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Register(context.Context, *RegisterRequest) (*GeneralResponse, error)
+	Refresh(context.Context, *RefreshTokenRequest) (*LoginResponse, error)
 	// Deprecated: Do not use.
 	GetUserClaims(context.Context, *empty.Empty) (*UserClaimsResponse, error)
 	CustomerAuthorization(context.Context, *empty.Empty) (*UserClaimsResponse, error)
@@ -132,6 +143,9 @@ func (UnimplementedAuthServiceServer) Login(context.Context, *LoginRequest) (*Lo
 }
 func (UnimplementedAuthServiceServer) Register(context.Context, *RegisterRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedAuthServiceServer) Refresh(context.Context, *RefreshTokenRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Refresh not implemented")
 }
 func (UnimplementedAuthServiceServer) GetUserClaims(context.Context, *empty.Empty) (*UserClaimsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserClaims not implemented")
@@ -208,6 +222,24 @@ func _AuthService_Register_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_Refresh_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).Refresh(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.AuthService/Refresh",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).Refresh(ctx, req.(*RefreshTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -302,6 +334,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Register",
 			Handler:    _AuthService_Register_Handler,
+		},
+		{
+			MethodName: "Refresh",
+			Handler:    _AuthService_Refresh_Handler,
 		},
 		{
 			MethodName: "GetUserClaims",

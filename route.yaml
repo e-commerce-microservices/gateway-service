@@ -12,6 +12,9 @@ http:
     - selector: ecommerce.AuthService.Login
       post: "/auth/login"
       body: "*"
+    - selector: ecommerce.AuthService.Refresh
+      post: "/auth/refresh"
+      body: "*"
 
     # Product gateway
     - selector: ecommerce.ProductService.Ping
@@ -27,16 +30,26 @@ http:
     - selector: ecommerce.ProductService.GetProduct
       post: "/product/detail"
       body: "*"
+    - selector: ecommerce.ProductService.GetRecomendProduct
+      post: "/product/recommend"
+      body: "*"
+    - selector: ecommerce.ProductService.GetProductBySupplier
+      post: "/product/supplier"
+      body: "*"
 
-    # - selector: ecommerce.ProductService.CreateProduct
-    #   post: "/product/create-product"
-    #   body: "*"
     
     # User gateway
     - selector: ecommerce.UserService.Ping
       get: "/user/ping"
     - selector: ecommerce.UserService.GetMe
       get: "/user/me"
-    - selector: ecommerce.UserService.SupplierRegister
-      post: "/seller/register"
+    # - selector: ecommerce.UserService.SupplierRegister
+    #   post: "/seller/register"
+    #   body: "*"
+
+    # Shop gateway
+    - selector: ecommerce.ShopService.Ping
+      get: "/shop/ping"
+    - selector: ecommerce.ShopService.RegisterShop
+      post: "/shop/register"
       body: "*"

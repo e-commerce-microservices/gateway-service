@@ -32,6 +32,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = pb.RegisterShopServiceHandlerFromEndpoint(ctx, mux, "shop-service:8080", opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Println("listen on port: 8080")
 
 	if err := http.ListenAndServe(":8080", allowCORS(mux)); err != nil {

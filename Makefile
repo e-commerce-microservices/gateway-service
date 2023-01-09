@@ -12,8 +12,8 @@ gatewaygen:
 	--grpc-gateway_opt paths=source_relative \
 	--grpc-gateway_opt grpc_api_configuration=route.yaml
 
-.PHONY: dockerbp
-dockerbp:
+.PHONY: rebuild
+rebuild:
 	docker build -t ngoctd/ecommerce-gateway:latest . && \
 	docker push ngoctd/ecommerce-gateway
 
