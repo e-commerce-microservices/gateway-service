@@ -19,9 +19,6 @@ http:
     # Product gateway
     - selector: ecommerce.ProductService.Ping
       get: "/product/ping"
-    - selector: ecommerce.ProductService.CreateCategory
-      post: "/category/create"
-      body: "*"
     - selector: ecommerce.ProductService.GetListCategory
       get: "/category/listing"
     - selector: ecommerce.ProductService.GetListProduct
@@ -35,6 +32,10 @@ http:
       body: "*"
     - selector: ecommerce.ProductService.GetProductBySupplier
       post: "/product/supplier"
+      body: "*"
+
+    - selector: ecommerce.ProductService.CreateCategory
+      post: "/category/create"
       body: "*"
 
     
@@ -53,3 +54,20 @@ http:
     - selector: ecommerce.ShopService.RegisterShop
       post: "/shop/register"
       body: "*"
+    - selector: ecommerce.ShopService.AddProduct
+      post: "/shop/add-product"
+      body: "*"
+    
+    # Image gateway
+    - selector: ecommerce.ImageService.Ping
+      get: "/image/ping"
+
+    # Search gateway
+    - selector: ecommerce.SearchService.SearchProduct
+      post: "/search/product"
+      body: "*"
+    - selector: ecommerce.SearchService.AddProduct
+      post: "/search/add-product"
+      body: "*"
+    - selector: ecommerce.SearchService.Ping
+      get: "/search/ping"

@@ -29,6 +29,7 @@ type ProductServiceClient interface {
 	GetListProduct(ctx context.Context, in *GetListProductRequest, opts ...grpc.CallOption) (*GetListProductResponse, error)
 	GetRecomendProduct(ctx context.Context, in *GetRecommendProductRequest, opts ...grpc.CallOption) (*GetListProductResponse, error)
 	GetProductBySupplier(ctx context.Context, in *GetProductBySupplierRequest, opts ...grpc.CallOption) (*GetListProductResponse, error)
+	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	CreateCategory(ctx context.Context, in *CreateCategoryRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	GetListCategory(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*GetListCategoryResponse, error)
 }
@@ -95,6 +96,15 @@ func (c *productServiceClient) GetProductBySupplier(ctx context.Context, in *Get
 	return out, nil
 }
 
+func (c *productServiceClient) UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
+	out := new(GeneralResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.ProductService/UpdateProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *productServiceClient) CreateCategory(ctx context.Context, in *CreateCategoryRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
 	out := new(GeneralResponse)
 	err := c.cc.Invoke(ctx, "/ecommerce.ProductService/CreateCategory", in, out, opts...)
@@ -123,6 +133,7 @@ type ProductServiceServer interface {
 	GetListProduct(context.Context, *GetListProductRequest) (*GetListProductResponse, error)
 	GetRecomendProduct(context.Context, *GetRecommendProductRequest) (*GetListProductResponse, error)
 	GetProductBySupplier(context.Context, *GetProductBySupplierRequest) (*GetListProductResponse, error)
+	UpdateProduct(context.Context, *UpdateProductRequest) (*GeneralResponse, error)
 	CreateCategory(context.Context, *CreateCategoryRequest) (*GeneralResponse, error)
 	GetListCategory(context.Context, *empty.Empty) (*GetListCategoryResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
@@ -149,6 +160,9 @@ func (UnimplementedProductServiceServer) GetRecomendProduct(context.Context, *Ge
 }
 func (UnimplementedProductServiceServer) GetProductBySupplier(context.Context, *GetProductBySupplierRequest) (*GetListProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProductBySupplier not implemented")
+}
+func (UnimplementedProductServiceServer) UpdateProduct(context.Context, *UpdateProductRequest) (*GeneralResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProduct not implemented")
 }
 func (UnimplementedProductServiceServer) CreateCategory(context.Context, *CreateCategoryRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCategory not implemented")
@@ -277,6 +291,24 @@ func _ProductService_GetProductBySupplier_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_UpdateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).UpdateProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.ProductService/UpdateProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).UpdateProduct(ctx, req.(*UpdateProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ProductService_CreateCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateCategoryRequest)
 	if err := dec(in); err != nil {
@@ -343,6 +375,10 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProductBySupplier",
 			Handler:    _ProductService_GetProductBySupplier_Handler,
+		},
+		{
+			MethodName: "UpdateProduct",
+			Handler:    _ProductService_UpdateProduct_Handler,
 		},
 		{
 			MethodName: "CreateCategory",
