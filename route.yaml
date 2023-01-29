@@ -71,3 +71,10 @@ http:
       body: "*"
     - selector: ecommerce.SearchService.Ping
       get: "/search/ping"
+
+    # Order service
+    - selector: ecommerce.OrderService.Ping
+      get: "/order/ping"
+    - selector: ecommerce.OrderService.CreateOrder
+      post: "/order/create"
+      body: "*"
