@@ -33,17 +33,24 @@ http:
     - selector: ecommerce.ProductService.GetProductBySupplier
       post: "/product/supplier"
       body: "*"
-
+    - selector: ecommerce.ProductService.GetListProductByIDs
+      post: "/product/list-product-by-ids"
+      body: "*"
     - selector: ecommerce.ProductService.CreateCategory
       post: "/category/create"
       body: "*"
-
+    - selector: ecommerce.ProductService.GetListProductByIDs
+      post: "/product/listing-ids"
+      body: "*"
     
     # User gateway
     - selector: ecommerce.UserService.Ping
       get: "/user/ping"
     - selector: ecommerce.UserService.GetMe
       get: "/user/me"
+    - selector: ecommerce.UserService.GetListUser
+      post: "/user/get-by-id"
+      body: "*"
     # - selector: ecommerce.UserService.SupplierRegister
     #   post: "/seller/register"
     #   body: "*"
@@ -56,6 +63,12 @@ http:
       body: "*"
     - selector: ecommerce.ShopService.AddProduct
       post: "/shop/add-product"
+      body: "*"
+    - selector: ecommerce.ShopService.DeleteProduct
+      post: "/shop/delete"
+      body: "*"
+    - selector: ecommerce.ShopService.UpdateProduct
+      post: "/shop/update"
       body: "*"
     
     # Image gateway
@@ -77,4 +90,40 @@ http:
       get: "/order/ping"
     - selector: ecommerce.OrderService.CreateOrder
       post: "/order/create"
+      body: "*"
+    - selector: ecommerce.OrderService.GetWaitingOrderByCustomer
+      get: "/order/waiting-by-customer"
+    - selector: ecommerce.OrderService.GetWaitingOrderBySupplier
+      get: "/order/waiting-by-supplier"
+    - selector: ecommerce.OrderService.GetHandledOrderByCustomer
+      get: "/order/handled-order-by-customer"
+
+    - selector: ecommerce.OrderService.DeleteOrder
+      post: "/order/delete"
+      body: "*"
+    - selector: ecommerce.OrderService.HandleOrder
+      post: "/order/handle"
+      body: "*"
+
+    # Review service
+    - selector: ecommerce.ReviewService.Ping
+      get: "/review/ping"
+    - selector: ecommerce.ReviewService.CreateReview
+      post: "/review/create"
+      body: "*"
+    - selector: ecommerce.ReviewService.GetAllReviewByProductID
+      post: "/review/get-by-product-id"
+      body: "*"
+    - selector: ecommerce.ReviewService.DeleteReview
+      post: "/review/delete"
+      body: "*"
+
+    # Cart service
+    - selector: ecommerce.CartService.Ping
+      get: "/cart/ping"
+    - selector: ecommerce.CartService.CreateCart
+      post: "/cart/create"
+      body: "*"
+    - selector: ecommerce.CartService.DeleteCart
+      post: "/cart/delete"
       body: "*"

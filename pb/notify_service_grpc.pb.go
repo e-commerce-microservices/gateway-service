@@ -25,6 +25,7 @@ const _ = grpc.SupportPackageIsVersion7
 type NotifyServiceClient interface {
 	Ping(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Pong, error)
 	CreateNotify(ctx context.Context, in *CreateNotifyRequest, opts ...grpc.CallOption) (*CreateNotifyResponse, error)
+	SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
 }
 
 type notifyServiceClient struct {
@@ -53,12 +54,22 @@ func (c *notifyServiceClient) CreateNotify(ctx context.Context, in *CreateNotify
 	return out, nil
 }
 
+func (c *notifyServiceClient) SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error) {
+	out := new(SendEmailResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.NotifyService/SendEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NotifyServiceServer is the server API for NotifyService service.
 // All implementations must embed UnimplementedNotifyServiceServer
 // for forward compatibility
 type NotifyServiceServer interface {
 	Ping(context.Context, *empty.Empty) (*Pong, error)
 	CreateNotify(context.Context, *CreateNotifyRequest) (*CreateNotifyResponse, error)
+	SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error)
 	mustEmbedUnimplementedNotifyServiceServer()
 }
 
@@ -71,6 +82,9 @@ func (UnimplementedNotifyServiceServer) Ping(context.Context, *empty.Empty) (*Po
 }
 func (UnimplementedNotifyServiceServer) CreateNotify(context.Context, *CreateNotifyRequest) (*CreateNotifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateNotify not implemented")
+}
+func (UnimplementedNotifyServiceServer) SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmail not implemented")
 }
 func (UnimplementedNotifyServiceServer) mustEmbedUnimplementedNotifyServiceServer() {}
 
@@ -121,6 +135,24 @@ func _NotifyService_CreateNotify_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifyService_SendEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyServiceServer).SendEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.NotifyService/SendEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyServiceServer).SendEmail(ctx, req.(*SendEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NotifyService_ServiceDesc is the grpc.ServiceDesc for NotifyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -135,6 +167,10 @@ var NotifyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateNotify",
 			Handler:    _NotifyService_CreateNotify_Handler,
+		},
+		{
+			MethodName: "SendEmail",
+			Handler:    _NotifyService_SendEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -30,6 +30,7 @@ type UserServiceClient interface {
 	GetMe(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*User, error)
 	GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*User, error)
 	GetUserById(ctx context.Context, in *GetUserByIDRequest, opts ...grpc.CallOption) (*User, error)
+	GetListUser(ctx context.Context, in *GetListUserRequest, opts ...grpc.CallOption) (*GetListUserResponse, error)
 	UpdateEmail(ctx context.Context, in *UpdateEmailRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	UpdateProfile(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*GeneralResponse, error)
 	AddAddress(ctx context.Context, in *UserAddress, opts ...grpc.CallOption) (*GeneralResponse, error)
@@ -105,6 +106,15 @@ func (c *userServiceClient) GetUserByEmail(ctx context.Context, in *GetUserByEma
 func (c *userServiceClient) GetUserById(ctx context.Context, in *GetUserByIDRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
 	err := c.cc.Invoke(ctx, "/ecommerce.UserService/GetUserById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetListUser(ctx context.Context, in *GetListUserRequest, opts ...grpc.CallOption) (*GetListUserResponse, error) {
+	out := new(GetListUserResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.UserService/GetListUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -194,6 +204,7 @@ type UserServiceServer interface {
 	GetMe(context.Context, *empty.Empty) (*User, error)
 	GetUserByEmail(context.Context, *GetUserByEmailRequest) (*User, error)
 	GetUserById(context.Context, *GetUserByIDRequest) (*User, error)
+	GetListUser(context.Context, *GetListUserRequest) (*GetListUserResponse, error)
 	UpdateEmail(context.Context, *UpdateEmailRequest) (*GeneralResponse, error)
 	UpdateProfile(context.Context, *UserProfile) (*GeneralResponse, error)
 	AddAddress(context.Context, *UserAddress) (*GeneralResponse, error)
@@ -229,6 +240,9 @@ func (UnimplementedUserServiceServer) GetUserByEmail(context.Context, *GetUserBy
 }
 func (UnimplementedUserServiceServer) GetUserById(context.Context, *GetUserByIDRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
+}
+func (UnimplementedUserServiceServer) GetListUser(context.Context, *GetListUserRequest) (*GetListUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListUser not implemented")
 }
 func (UnimplementedUserServiceServer) UpdateEmail(context.Context, *UpdateEmailRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateEmail not implemented")
@@ -389,6 +403,24 @@ func _UserService_GetUserById_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).GetUserById(ctx, req.(*GetUserByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetListUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetListUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.UserService/GetListUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetListUser(ctx, req.(*GetListUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -571,6 +603,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserById",
 			Handler:    _UserService_GetUserById_Handler,
+		},
+		{
+			MethodName: "GetListUser",
+			Handler:    _UserService_GetListUser_Handler,
 		},
 		{
 			MethodName: "UpdateEmail",

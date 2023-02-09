@@ -27,6 +27,8 @@ type ShopServiceClient interface {
 	RegisterShop(ctx context.Context, in *RegisterShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	GetShop(ctx context.Context, in *GetShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	AddProduct(ctx context.Context, in *CreateProductRequest, opts ...grpc.CallOption) (*CreateProductResponse, error)
+	DeleteProduct(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*DeleteProductResponse, error)
+	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	FollowShop(ctx context.Context, in *FollowShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 }
 
@@ -74,6 +76,24 @@ func (c *shopServiceClient) AddProduct(ctx context.Context, in *CreateProductReq
 	return out, nil
 }
 
+func (c *shopServiceClient) DeleteProduct(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*DeleteProductResponse, error) {
+	out := new(DeleteProductResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.ShopService/DeleteProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopServiceClient) UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
+	out := new(GeneralResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.ShopService/UpdateProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *shopServiceClient) FollowShop(ctx context.Context, in *FollowShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
 	out := new(GeneralResponse)
 	err := c.cc.Invoke(ctx, "/ecommerce.ShopService/FollowShop", in, out, opts...)
@@ -91,6 +111,8 @@ type ShopServiceServer interface {
 	RegisterShop(context.Context, *RegisterShopRequest) (*GeneralResponse, error)
 	GetShop(context.Context, *GetShopRequest) (*GeneralResponse, error)
 	AddProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error)
+	DeleteProduct(context.Context, *DeleteProductRequest) (*DeleteProductResponse, error)
+	UpdateProduct(context.Context, *UpdateProductRequest) (*GeneralResponse, error)
 	FollowShop(context.Context, *FollowShopRequest) (*GeneralResponse, error)
 	mustEmbedUnimplementedShopServiceServer()
 }
@@ -110,6 +132,12 @@ func (UnimplementedShopServiceServer) GetShop(context.Context, *GetShopRequest) 
 }
 func (UnimplementedShopServiceServer) AddProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddProduct not implemented")
+}
+func (UnimplementedShopServiceServer) DeleteProduct(context.Context, *DeleteProductRequest) (*DeleteProductResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProduct not implemented")
+}
+func (UnimplementedShopServiceServer) UpdateProduct(context.Context, *UpdateProductRequest) (*GeneralResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProduct not implemented")
 }
 func (UnimplementedShopServiceServer) FollowShop(context.Context, *FollowShopRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FollowShop not implemented")
@@ -199,6 +227,42 @@ func _ShopService_AddProduct_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShopService_DeleteProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopServiceServer).DeleteProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.ShopService/DeleteProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopServiceServer).DeleteProduct(ctx, req.(*DeleteProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShopService_UpdateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopServiceServer).UpdateProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.ShopService/UpdateProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopServiceServer).UpdateProduct(ctx, req.(*UpdateProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ShopService_FollowShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FollowShopRequest)
 	if err := dec(in); err != nil {
@@ -239,6 +303,14 @@ var ShopService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddProduct",
 			Handler:    _ShopService_AddProduct_Handler,
+		},
+		{
+			MethodName: "DeleteProduct",
+			Handler:    _ShopService_DeleteProduct_Handler,
+		},
+		{
+			MethodName: "UpdateProduct",
+			Handler:    _ShopService_UpdateProduct_Handler,
 		},
 		{
 			MethodName: "FollowShop",

@@ -52,6 +52,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = pb.RegisterReviewServiceHandlerFromEndpoint(ctx, mux, "review-service:8080", opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = pb.RegisterCartServiceHandlerFromEndpoint(ctx, mux, "cart-service:8080", opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Println("listen on port: 8080")
 
 	if err := http.ListenAndServe(":8080", allowCORS(mux)); err != nil {
