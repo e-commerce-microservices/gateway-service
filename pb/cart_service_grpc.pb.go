@@ -26,6 +26,7 @@ type CartServiceClient interface {
 	Ping(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Pong, error)
 	CreateCart(ctx context.Context, in *CreateCartRequest, opts ...grpc.CallOption) (*CreateCartResponse, error)
 	DeleteCart(ctx context.Context, in *DeleteCartRequest, opts ...grpc.CallOption) (*DeleteCartResponse, error)
+	GetCartByCustomer(ctx context.Context, in *GetCartByCustomerRequest, opts ...grpc.CallOption) (*GetCartByCustomerResponse, error)
 }
 
 type cartServiceClient struct {
@@ -63,6 +64,15 @@ func (c *cartServiceClient) DeleteCart(ctx context.Context, in *DeleteCartReques
 	return out, nil
 }
 
+func (c *cartServiceClient) GetCartByCustomer(ctx context.Context, in *GetCartByCustomerRequest, opts ...grpc.CallOption) (*GetCartByCustomerResponse, error) {
+	out := new(GetCartByCustomerResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.CartService/GetCartByCustomer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CartServiceServer is the server API for CartService service.
 // All implementations must embed UnimplementedCartServiceServer
 // for forward compatibility
@@ -70,6 +80,7 @@ type CartServiceServer interface {
 	Ping(context.Context, *empty.Empty) (*Pong, error)
 	CreateCart(context.Context, *CreateCartRequest) (*CreateCartResponse, error)
 	DeleteCart(context.Context, *DeleteCartRequest) (*DeleteCartResponse, error)
+	GetCartByCustomer(context.Context, *GetCartByCustomerRequest) (*GetCartByCustomerResponse, error)
 	mustEmbedUnimplementedCartServiceServer()
 }
 
@@ -85,6 +96,9 @@ func (UnimplementedCartServiceServer) CreateCart(context.Context, *CreateCartReq
 }
 func (UnimplementedCartServiceServer) DeleteCart(context.Context, *DeleteCartRequest) (*DeleteCartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCart not implemented")
+}
+func (UnimplementedCartServiceServer) GetCartByCustomer(context.Context, *GetCartByCustomerRequest) (*GetCartByCustomerResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCartByCustomer not implemented")
 }
 func (UnimplementedCartServiceServer) mustEmbedUnimplementedCartServiceServer() {}
 
@@ -153,6 +167,24 @@ func _CartService_DeleteCart_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CartService_GetCartByCustomer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCartByCustomerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CartServiceServer).GetCartByCustomer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.CartService/GetCartByCustomer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CartServiceServer).GetCartByCustomer(ctx, req.(*GetCartByCustomerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CartService_ServiceDesc is the grpc.ServiceDesc for CartService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -171,6 +203,10 @@ var CartService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCart",
 			Handler:    _CartService_DeleteCart_Handler,
+		},
+		{
+			MethodName: "GetCartByCustomer",
+			Handler:    _CartService_GetCartByCustomer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

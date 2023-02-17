@@ -20,3 +20,4 @@ rebuild:
 .PHONY: redeploy
 redeploy:
 	kubectl rollout restart deployment depl-gateway
+	

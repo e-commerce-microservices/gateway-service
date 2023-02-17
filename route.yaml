@@ -127,3 +127,6 @@ http:
     - selector: ecommerce.CartService.DeleteCart
       post: "/cart/delete"
       body: "*"
+    - selector: ecommerce.CartService.GetCartByCustomer
+      post: "/cart/get-all"
+      body: "*"
