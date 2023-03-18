@@ -25,11 +25,12 @@ const _ = grpc.SupportPackageIsVersion7
 type ShopServiceClient interface {
 	Ping(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*Pong, error)
 	RegisterShop(ctx context.Context, in *RegisterShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
-	GetShop(ctx context.Context, in *GetShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
+	GetShop(ctx context.Context, in *GetShopRequest, opts ...grpc.CallOption) (*GetShopResponse, error)
 	AddProduct(ctx context.Context, in *CreateProductRequest, opts ...grpc.CallOption) (*CreateProductResponse, error)
 	DeleteProduct(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*DeleteProductResponse, error)
 	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
 	FollowShop(ctx context.Context, in *FollowShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error)
+	UpdateShopName(ctx context.Context, in *UpdateShopNameRequest, opts ...grpc.CallOption) (*GetShopResponse, error)
 }
 
 type shopServiceClient struct {
@@ -58,8 +59,8 @@ func (c *shopServiceClient) RegisterShop(ctx context.Context, in *RegisterShopRe
 	return out, nil
 }
 
-func (c *shopServiceClient) GetShop(ctx context.Context, in *GetShopRequest, opts ...grpc.CallOption) (*GeneralResponse, error) {
-	out := new(GeneralResponse)
+func (c *shopServiceClient) GetShop(ctx context.Context, in *GetShopRequest, opts ...grpc.CallOption) (*GetShopResponse, error) {
+	out := new(GetShopResponse)
 	err := c.cc.Invoke(ctx, "/ecommerce.ShopService/GetShop", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -103,17 +104,27 @@ func (c *shopServiceClient) FollowShop(ctx context.Context, in *FollowShopReques
 	return out, nil
 }
 
+func (c *shopServiceClient) UpdateShopName(ctx context.Context, in *UpdateShopNameRequest, opts ...grpc.CallOption) (*GetShopResponse, error) {
+	out := new(GetShopResponse)
+	err := c.cc.Invoke(ctx, "/ecommerce.ShopService/UpdateShopName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShopServiceServer is the server API for ShopService service.
 // All implementations must embed UnimplementedShopServiceServer
 // for forward compatibility
 type ShopServiceServer interface {
 	Ping(context.Context, *empty.Empty) (*Pong, error)
 	RegisterShop(context.Context, *RegisterShopRequest) (*GeneralResponse, error)
-	GetShop(context.Context, *GetShopRequest) (*GeneralResponse, error)
+	GetShop(context.Context, *GetShopRequest) (*GetShopResponse, error)
 	AddProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error)
 	DeleteProduct(context.Context, *DeleteProductRequest) (*DeleteProductResponse, error)
 	UpdateProduct(context.Context, *UpdateProductRequest) (*GeneralResponse, error)
 	FollowShop(context.Context, *FollowShopRequest) (*GeneralResponse, error)
+	UpdateShopName(context.Context, *UpdateShopNameRequest) (*GetShopResponse, error)
 	mustEmbedUnimplementedShopServiceServer()
 }
 
@@ -127,7 +138,7 @@ func (UnimplementedShopServiceServer) Ping(context.Context, *empty.Empty) (*Pong
 func (UnimplementedShopServiceServer) RegisterShop(context.Context, *RegisterShopRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterShop not implemented")
 }
-func (UnimplementedShopServiceServer) GetShop(context.Context, *GetShopRequest) (*GeneralResponse, error) {
+func (UnimplementedShopServiceServer) GetShop(context.Context, *GetShopRequest) (*GetShopResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetShop not implemented")
 }
 func (UnimplementedShopServiceServer) AddProduct(context.Context, *CreateProductRequest) (*CreateProductResponse, error) {
@@ -141,6 +152,9 @@ func (UnimplementedShopServiceServer) UpdateProduct(context.Context, *UpdateProd
 }
 func (UnimplementedShopServiceServer) FollowShop(context.Context, *FollowShopRequest) (*GeneralResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FollowShop not implemented")
+}
+func (UnimplementedShopServiceServer) UpdateShopName(context.Context, *UpdateShopNameRequest) (*GetShopResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateShopName not implemented")
 }
 func (UnimplementedShopServiceServer) mustEmbedUnimplementedShopServiceServer() {}
 
@@ -281,6 +295,24 @@ func _ShopService_FollowShop_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShopService_UpdateShopName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateShopNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopServiceServer).UpdateShopName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ecommerce.ShopService/UpdateShopName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopServiceServer).UpdateShopName(ctx, req.(*UpdateShopNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShopService_ServiceDesc is the grpc.ServiceDesc for ShopService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -315,6 +347,10 @@ var ShopService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FollowShop",
 			Handler:    _ShopService_FollowShop_Handler,
+		},
+		{
+			MethodName: "UpdateShopName",
+			Handler:    _ShopService_UpdateShopName_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

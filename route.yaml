@@ -42,6 +42,9 @@ http:
     - selector: ecommerce.ProductService.GetListProductByIDs
       post: "/product/listing-ids"
       body: "*"
+    - selector: ecommerce.ProductService.GetCategoryBySupplier
+      post: "/product/category-supplier"
+      body: "*"
     
     # User gateway
     - selector: ecommerce.UserService.Ping
@@ -50,6 +53,9 @@ http:
       get: "/user/me"
     - selector: ecommerce.UserService.GetListUser
       post: "/user/get-by-id"
+      body: "*"
+    - selector: ecommerce.UserService.UpdateProfile
+      post: "/user/update-profile"
       body: "*"
     # - selector: ecommerce.UserService.SupplierRegister
     #   post: "/seller/register"
@@ -69,6 +75,12 @@ http:
       body: "*"
     - selector: ecommerce.ShopService.UpdateProduct
       post: "/shop/update"
+      body: "*"
+    - selector: ecommerce.ShopService.GetShop
+      post: "/shop/get"
+      body: "*"
+    - selector: ecommerce.ShopService.UpdateShopName
+      post: "/shop/update-shop-name"
       body: "*"
     
     # Image gateway
@@ -97,6 +109,15 @@ http:
       get: "/order/waiting-by-supplier"
     - selector: ecommerce.OrderService.GetHandledOrderByCustomer
       get: "/order/handled-order-by-customer"
+    - selector: ecommerce.OrderService.GetHandledOrderBySupllier
+      get: "/order/handled-order-by-supplier"
+    - selector: ecommerce.OrderService.GetCancelOrderByCustomer
+      get: "/order/cancel-order-by-customer"
+    - selector: ecommerce.OrderService.GetCancelOrderBySupplier
+      get: "/order/cancel-order-by-supplier"
+    - selector: ecommerce.OrderService.GetAddressOrder
+      post: "/order/get-address"
+      body: "*"
 
     - selector: ecommerce.OrderService.DeleteOrder
       post: "/order/delete"
@@ -130,3 +151,17 @@ http:
     - selector: ecommerce.CartService.GetCartByCustomer
       post: "/cart/get-all"
       body: "*"
+    # Report service
+    - selector: ecommerce.AdminService.Ping
+      get: "/report/ping"
+    - selector: ecommerce.AdminService.CreateReport
+      post: "/report/create"
+      body: "*"
+    - selector: ecommerce.AdminService.HandleReport
+      post: "/report/handle"
+      body: "*"
+    - selector: ecommerce.AdminService.DeleteReport
+      post: "/report/delete"
+      body: "*"
+    - selector: ecommerce.AdminService.GetAllReport
+      get: "/report/get"
